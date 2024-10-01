@@ -15,9 +15,9 @@
 
 ---
 
-<h3 align="left" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Connect with me:</h3>
+<h3 align="left" style="font-family: 'Times New Roman' 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Connect with me:</h3>
 <p align="left">
-  <a href="https://linkedin.com/in/your-profile" target="blank" style="padding-right: 10px;">
+  <a href="https://linkedin.com/in/your-profile" target="blank" style="padding-right: 10px; margin-left:25px;">
     <img align="center" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" height="30" width="30" />
   </a>
   <a href="mailto:rkiru04@gmail.com" target="blank" style="padding-right: 10px;">
