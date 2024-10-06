@@ -101,6 +101,4 @@
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=kiranr12r&theme=radical" alt="Kiran's GitHub Streak" />
 </p>
 
-<p align="center">
-  <img src="https://wallpaperaccess.com/full/13240883.png" alt="Banner" width="100%" />
-</p>
+
