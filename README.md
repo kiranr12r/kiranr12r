@@ -5,13 +5,21 @@
 
 <p align="center"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=kiranr12r&theme=dracula&margin-w=15&no-bg=true" alt="kiranr12r" /></a> </p>
 
-- 🔭 I’m currently working on **Nike**
-
-- 🌱 I’m currently learning **TypeScript**
-
-- 👨‍💻 All of my projects are available at [My Portfolio](https://portfollio-73d2a.web.app/)
-
-- 📫 How to reach me: **rkiru04@gmail.com**
+<table align="center">
+  <tr>
+    <td>
+      <ul>
+        <li>🔭 I’m currently working on <strong>Nike</strong></li>
+        <li>🌱 I’m currently learning <strong>TypeScript</strong></li>
+        <li>👨‍💻 All of my projects are available at <a href="https://portfollio-73d2a.web.app/">My Portfolio</a></li>
+        <li>📫 How to reach me: <strong>rkiru04@gmail.com</strong></li>
+      </ul>
+    </td>
+    <td>
+      <img align="right" src="https://raw.githubusercontent.com/punitkmryh/punitkmryh/master/Developer.gif" alt="Developer gif" width="400px"/>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -34,7 +42,7 @@
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="aws" width="40" height="40"/> 
   </a> 
   <a href="https://www.gnu.org/software/bash/" target="_blank" rel="noreferrer" style="padding-right: 20px;"> 
-    <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="40" height="40"/> 
+    <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="40" height="40" padding="20px"/> 
   </a> 
   <a href="https://getbootstrap.com" target="_blank" rel="noreferrer" style="padding: 5px;"> 
     <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/> 
@@ -91,8 +99,4 @@
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api?username=kiranr12r&show_icons=true&theme=radical" alt="Kiran's GitHub Stats" />
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=kiranr12r&theme=radical" alt="Kiran's GitHub Streak" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kiranr12r&layout=compact&theme=radical" alt="Top Languages"/>
 </p>
