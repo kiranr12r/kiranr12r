@@ -16,7 +16,7 @@
       </ul>
     </td>
     <td>
-      <img align="right" src="https://raw.githubusercontent.com/punitkmryh/punitkmryh/master/Developer.gif" alt="Developer gif" width="400px"/>
+      <img align="right" src="https://www.eldorado.org.br/wp-content/uploads/2023/03/1_HB8gelA3XvpkJMie1w6WiQ.gif" alt="Developer gif" width="400px"/>
     </td>
   </tr>
 </table>
@@ -102,5 +102,5 @@
 </p>
 
 <p align="center">
-  <img src="https://cdn.pixabay.com/photo/2023/10/20/14/25/ai-generated-8329596_1280.jpg" alt="Banner" width="100%" />
+  <img src="https://wallpaperaccess.com/full/13240883.png" alt="Banner" width="100%" />
 </p>
