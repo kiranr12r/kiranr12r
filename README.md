@@ -16,7 +16,7 @@
       </ul>
     </td>
     <td>
-      <img align="right" src="https://raw.githubusercontent.com/punitkmryh/punitkmryh/master/Developer.gif" alt="Developer gif" width="400px"/>
+      <img align="right" src="https://www.eldorado.org.br/wp-content/uploads/2023/03/1_HB8gelA3XvpkJMie1w6WiQ.gif" alt="Developer gif" width="400px"/>
     </td>
   </tr>
 </table>
