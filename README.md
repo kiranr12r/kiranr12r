@@ -19,7 +19,7 @@
       <ul style="list-style-type: none; padding-left: 0; font-size: 1.2rem; line-height: 1.8;">
         <li>🔭 I’m currently working on <strong>building projects</strong></li>
         <li>🌱 I’m currently learning <strong>TypeScript</strong></li>
-        <li>👨‍💻 All of my projects are available at <a href="https://portfollio-73d2a.web.app/" style="color: #4682B4; text-decoration: none;">My Portfolio</a></li>
+        <li>👨‍💻 All of my projects are available at <a href="https://portfolios-chi-seven.vercel.app/" style="color: #4682B4; text-decoration: none;">My Portfolio</a></li>
         <li>📫 How to reach me: <strong>rkiru04@gmail.com</strong></li>
       </ul>
     </td>
