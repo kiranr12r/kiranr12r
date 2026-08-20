@@ -1,10 +1,43 @@
 #!/usr/bin/env python3
-import json, re, urllib.request
+"""
+Generates dark_mode.svg and light_mode.svg in the classic "neofetch" style:
+ASCII-art portrait (converted from assets/profile.jpg) on the left,
+dotted key/value system info + live GitHub stats on the right.
+"""
+import json
+import urllib.request
 from pathlib import Path
+from PIL import Image, ImageOps, ImageEnhance
 
-USER = "kiranr12r"
+USER = "kiranr12r"  # your GitHub username
 ROOT = Path(__file__).resolve().parent
+PHOTO = ROOT / "assets" / "profile.jpg"
 
+RAMP = " .:-=+*#%@"
+
+
+# ---------- ASCII ART ----------
+def image_to_ascii(path, cols=54, rows=34, crop_box=None):
+    im = Image.open(path).convert("RGB")
+    if crop_box:
+        im = im.crop(crop_box)
+    gray = ImageOps.grayscale(im)
+    gray = ImageEnhance.Contrast(gray).enhance(1.35)
+    gray = ImageEnhance.Brightness(gray).enhance(1.05)
+    gray = gray.resize((cols, rows))
+    pixels = list(gray.getdata())
+    lines = []
+    for r in range(rows):
+        row = []
+        for c in range(cols):
+            p = pixels[r * cols + c]
+            idx = int(((255 - p) / 255) * (len(RAMP) - 1))
+            row.append(RAMP[idx])
+        lines.append("".join(row))
+    return lines
+
+
+# ---------- GITHUB STATS ----------
 def api(path):
     req = urllib.request.Request(
         "https://api.github.com" + path,
@@ -13,87 +46,141 @@ def api(path):
     with urllib.request.urlopen(req, timeout=20) as r:
         return json.load(r)
 
+
+def get_stats():
+    u = api(f"/users/{USER}")
+    repos = []
+    page = 1
+    while True:
+        batch = api(f"/users/{USER}/repos?per_page=100&page={page}&type=owner")
+        repos += batch
+        if len(batch) < 100:
+            break
+        page += 1
+    stars = sum(r.get("stargazers_count", 0) for r in repos)
+    return {
+        "repos": u.get("public_repos", len(repos)),
+        "followers": u.get("followers", 0),
+        "following": u.get("following", 0),
+        "stars": stars,
+    }
+
+
+# ---------- ESCAPING ----------
 def esc(s):
-    return str(s).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace('"',"&quot;")
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
 
-u = api(f"/users/{USER}")
-repos = []
-page = 1
-while True:
-    batch = api(f"/users/{USER}/repos?per_page=100&page={page}&type=owner")
-    repos += batch
-    if len(batch) < 100:
-        break
-    page += 1
 
-stars = sum(r.get("stargazers_count", 0) for r in repos)
-forks = sum(r.get("forks_count", 0) for r in repos)
-commits = 0
+# ---------- SVG BUILD ----------
+def build_svg(ascii_lines, stats, dark=False):
+    bg = "#0d1117" if dark else "#f6f8fa"
+    fg = "#e6edf3" if dark else "#24292f"
+    key_c = "#79c0ff" if dark else "#953800"
+    val_c = "#a5d6ff" if dark else "#0a3069"
+    cc = "#30363d" if dark else "#c2cfde"
+    add_c = "#3fb950" if dark else "#1a7f37"
 
-for r in repos[:100]:
-    try:
-        req = urllib.request.Request(
-            f"https://api.github.com/repos/{USER}/{r['name']}/commits?author={USER}&per_page=1",
-            headers={"Accept":"application/vnd.github+json","User-Agent":USER},
-        )
-        with urllib.request.urlopen(req, timeout=10) as res:
-            link = res.headers.get("Link","")
-            m = re.search(r'[?&]page=(\d+)>; rel="last"', link)
-            commits += int(m.group(1)) if m else len(json.load(res))
-    except Exception:
-        pass
+    width, height = 1080, 560
+    ascii_x = 15
+    ascii_y_start = 26
+    line_h = 13.2
+    ascii_font = 12
 
-stats = {
-    "repos": u.get("public_repos", len(repos)),
-    "followers": u.get("followers", 0),
-    "following": u.get("following", 0),
-    "stars": stars,
-    "forks": forks,
-    "commits": commits,
-}
+    info_x = 460
+    row_h = 20
 
-def svg(dark):
-    bg, panel = ("#0d1117","#111827") if dark else ("#f6f8fa","#ffffff")
-    fg, muted = ("#e6edf3","#8b949e") if dark else ("#24292f","#57606a")
-    cyan, green, border = ("#79c0ff","#7ee787","#30363d") if dark else ("#0969da","#1a7f37","#d0d7de")
+    svg_parts = [f'<svg xmlns="http://www.w3.org/2000/svg" font-family="Consolas,monospace" '
+                 f'width="{width}px" height="{height}px" font-size="16px">']
+    svg_parts.append('<style>text,tspan{white-space:pre;}</style>')
+    svg_parts.append(f'<rect width="{width}px" height="{height}px" fill="{bg}" rx="15"/>')
+
+    # ASCII art block (its own <text>, since it uses a different font-size)
+    ascii_tspans = []
+    y = ascii_y_start
+    for line in ascii_lines:
+        ascii_tspans.append(f'<tspan x="{ascii_x}" y="{y:.1f}">{esc(line)}</tspan>')
+        y += line_h
+    svg_parts.append(f'<text x="{ascii_x}" y="{ascii_y_start}" fill="{fg}" font-size="{ascii_font}px" '
+                      f'font-family="Consolas,monospace">{"".join(ascii_tspans)}</text>')
+
+    # Info block (neofetch key/value style)
     rows = [
-        ("$ whoami",cyan,1),("Kiran R",fg,1),("Full-Stack Developer  |  AI/ML Enthusiast",muted,0),("","",0),
-        ("$ cat system.txt",cyan,1),("OS          : India • UTC+05:30",fg,0),("Focus       : Full-Stack + AI/ML",fg,0),
-        ("Learning    : TypeScript • AI/ML • Modern Backend",fg,0),("IDE         : VS Code",fg,0),("","",0),
-        ("$ cat stack.txt",cyan,1),("Frontend    : React • Next.js • Tailwind CSS",fg,0),
-        ("Backend     : Node.js • Express • Flask",fg,0),("Languages   : JavaScript • TypeScript • Python • Java",fg,0),
-        ("Data        : MongoDB • PostgreSQL • MySQL",fg,0),("Tools       : Git • GitHub • Docker",fg,0),("","",0),
-        ("$ github --stats",cyan,1),(f"Repos       : {stats['repos']}",green,0),(f"Followers   : {stats['followers']}",green,0),
-        (f"Following   : {stats['following']}",green,0),(f"Stars       : {stats['stars']}",green,0),
-        (f"Forks       : {stats['forks']}",green,0),(f"Commits*    : {stats['commits']}",green,0),("","",0),
-        ("$ projects --pinned",cyan,1),("AI Smart Port Navigation",fg,0),("Open Source Finder",fg,0),
-        ("AI Proctoring System",fg,0),("Vendor Management System",fg,0),("","",0),
-        ("$ contact",cyan,1),("Email       : rkiru04@gmail.com",fg,0),
-        ("Portfolio   : portfolios-chi-seven.vercel.app",fg,0),("GitHub      : github.com/kiranr12r",fg,0),("","",0),
-        ('$ echo "Always learning. Always building."',cyan,1)
+        ("header", "kiran@github"),
+        ("kv", "Role", "Full-Stack Developer | AI/ML Enthusiast"),
+        ("kv", "Location", "India (UTC+05:30)"),
+        ("kv", "IDE", "VS Code"),
+        ("blank", None),
+        ("kv", "Frontend", "React, Next.js, Tailwind CSS"),
+        ("kv", "Backend", "Node.js, Express, Flask"),
+        ("kv", "Languages", "JavaScript, TypeScript, Python, Java"),
+        ("kv", "Databases", "MongoDB, PostgreSQL, MySQL"),
+        ("blank", None),
+        ("kv", "Email", "rkiru04@gmail.com"),
+        ("kv", "Portfolio", "portfolios-chi-seven.vercel.app"),
+        ("kv", "GitHub", "github.com/kiranr12r"),
+        ("blank", None),
+        ("header2", "GitHub Stats"),
+        ("stat", None),
     ]
-    y=88
-    out=[]
-    for s,c,b in rows:
-        if not s:
-            y += 9
-            continue
-        out.append(f'<text x="350" y="{y}" fill="{c}" font-family="monospace" font-size="{16 if b else 14}" font-weight="{"700" if b else "400"}">{esc(s)}</text>')
-        y += 20
-    h=max(720,y+30)
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="{h}" viewBox="0 0 1200 {h}">
-<rect width="1200" height="{h}" rx="18" fill="{bg}"/>
-<rect x="18" y="18" width="1164" height="{h-36}" rx="14" fill="{panel}" stroke="{border}" stroke-width="2"/>
-<circle cx="58" cy="52" r="7" fill="{green}"/><circle cx="82" cy="52" r="7" fill="{muted}"/><circle cx="106" cy="52" r="7" fill="{muted}"/>
-<text x="145" y="58" fill="{muted}" font-family="monospace" font-size="14">kiranr12r@github:~</text>
-<rect x="48" y="88" width="250" height="{h-136}" rx="12" fill="{bg}" stroke="{border}"/>
-<image href="https://raw.githubusercontent.com/kiranr12r/kiranr12r/main/assets/profile.jpg" x="68" y="112" width="210" height="270" preserveAspectRatio="xMidYMid slice"/>
-<rect x="68" y="112" width="210" height="270" rx="8" fill="none" stroke="{border}" stroke-width="2"/>
-<text x="68" y="420" fill="{fg}" font-family="monospace" font-size="22" font-weight="700">KIRAN R</text>
-<text x="68" y="448" fill="{muted}" font-family="monospace" font-size="14">Full-Stack Developer</text>
-<text x="68" y="470" fill="{muted}" font-family="monospace" font-size="14">AI/ML Enthusiast</text>
-{''.join(out)}
-</svg>'''
 
-Path(ROOT/"dark_mode.svg").write_text(svg(True), encoding="utf-8")
-Path(ROOT/"light_mode.svg").write_text(svg(False), encoding="utf-8")
+    info_tspans = []
+    y = ascii_y_start + 4
+    for row in rows:
+        kind = row[0]
+        if kind == "header":
+            info_tspans.append(f'<tspan x="{info_x}" y="{y:.1f}" fill="{fg}" font-weight="700">{esc(row[1])}</tspan>'
+                                f'<tspan fill="{cc}"> -——————————————————————————————-—-</tspan>')
+            y += row_h
+        elif kind == "header2":
+            info_tspans.append(f'<tspan x="{info_x}" y="{y:.1f}" fill="{fg}" font-weight="700">- {esc(row[1])}</tspan>'
+                                f'<tspan fill="{cc}"> -——————————————————————-—-</tspan>')
+            y += row_h
+        elif kind == "kv":
+            label, value = row[1], row[2]
+            dots = "." * max(3, 22 - len(label))
+            info_tspans.append(f'<tspan x="{info_x}" y="{y:.1f}" fill="{cc}">. </tspan>'
+                                f'<tspan fill="{key_c}">{esc(label)}</tspan>'
+                                f'<tspan fill="{cc}">: {dots} </tspan>'
+                                f'<tspan fill="{val_c}">{esc(value)}</tspan>')
+            y += row_h
+        elif kind == "stat":
+            info_tspans.append(f'<tspan x="{info_x}" y="{y:.1f}" fill="{cc}">. </tspan>'
+                                f'<tspan fill="{key_c}">Repos</tspan><tspan fill="{cc}">: .... </tspan>'
+                                f'<tspan fill="{add_c}">{stats["repos"]}</tspan>'
+                                f'<tspan fill="{cc}"> | </tspan>'
+                                f'<tspan fill="{key_c}">Followers</tspan><tspan fill="{cc}">: .. </tspan>'
+                                f'<tspan fill="{add_c}">{stats["followers"]}</tspan>')
+            y += row_h
+            info_tspans.append(f'<tspan x="{info_x}" y="{y:.1f}" fill="{cc}">. </tspan>'
+                                f'<tspan fill="{key_c}">Following</tspan><tspan fill="{cc}">: . </tspan>'
+                                f'<tspan fill="{add_c}">{stats["following"]}</tspan>'
+                                f'<tspan fill="{cc}"> | </tspan>'
+                                f'<tspan fill="{key_c}">Stars</tspan><tspan fill="{cc}">: .... </tspan>'
+                                f'<tspan fill="{add_c}">{stats["stars"]}</tspan>')
+            y += row_h
+        else:  # blank
+            y += row_h * 0.5
+
+    svg_parts.append(f'<text font-size="14px">{"".join(info_tspans)}</text>')
+    svg_parts.append("</svg>")
+    return "\n".join(svg_parts)
+
+
+def main():
+    crop = (150, 60, 1400, 1500)  # head/shoulders/upper-torso bust crop
+    ascii_lines = image_to_ascii(str(PHOTO), cols=54, rows=34, crop_box=crop)
+
+    try:
+        stats = get_stats()
+    except Exception:
+        # Falls back to placeholders if the API is unreachable (e.g. offline preview)
+        stats = {"repos": "53", "followers": "4", "following": "10", "stars": "1"}
+
+    (ROOT / "dark_mode.svg").write_text(build_svg(ascii_lines, stats, dark=True), encoding="utf-8")
+    (ROOT / "light_mode.svg").write_text(build_svg(ascii_lines, stats, dark=False), encoding="utf-8")
+    print("done")
+
+
+if __name__ == "__main__":
+    main()
