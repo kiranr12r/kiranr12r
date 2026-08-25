@@ -1,0 +1,85 @@
+<svg viewBox="0 0 420 616" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','Fira Code',Consolas,monospace">
+  <defs>
+    <linearGradient id="bezel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b2b2f"/>
+      <stop offset="100%" stop-color="#161618"/>
+    </linearGradient>
+    <linearGradient id="screenGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e12"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+    <clipPath id="screenClip">
+      <rect x="14" y="14" width="392" height="588" rx="30"/>
+    </clipPath>
+  </defs>
+
+  <!-- Phone body -->
+  <rect x="0" y="0" width="420" height="616" rx="42" fill="url(#bezel)"/>
+  <rect x="4" y="4" width="412" height="608" rx="38" fill="#0b0b0c"/>
+
+  <!-- Screen -->
+  <g clip-path="url(#screenClip)">
+    <rect x="14" y="14" width="392" height="588" fill="url(#screenGlow)"/>
+
+    <!-- Status bar -->
+    <text x="34" y="46" fill="#e8e8e8" font-size="15" font-weight="600">9:41</text>
+    <circle cx="210" cy="38" r="6" fill="#000" stroke="#2a2a2a" stroke-width="1"/>
+    <g fill="#e8e8e8">
+      <rect x="330" y="38" width="3" height="6"/>
+      <rect x="335" y="35" width="3" height="9"/>
+      <rect x="340" y="32" width="3" height="12"/>
+      <rect x="345" y="29" width="3" height="15"/>
+    </g>
+    <path d="M358 42 Q365 33 372 42" fill="none" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
+    <path d="M361 45 Q365 40 369 45" fill="none" stroke="#e8e8e8" stroke-width="2" stroke-linecap="round"/>
+    <rect x="380" y="33" width="20" height="11" rx="2.5" fill="none" stroke="#e8e8e8" stroke-width="1.5"/>
+    <rect x="401" y="36.5" width="2" height="4" rx="1" fill="#e8e8e8"/>
+    <rect x="382" y="35" width="14" height="7" rx="1" fill="#3ddc84"/>
+
+    <!-- App bar -->
+    <rect x="14" y="60" width="392" height="64" fill="#111418"/>
+    <rect x="14" y="123" width="392" height="1" fill="#22262b"/>
+    <rect x="34" y="80" width="26" height="26" rx="6" fill="#0a0a0a" stroke="#3ddc84" stroke-width="1.2"/>
+    <text x="40" y="98" fill="#3ddc84" font-size="13" font-weight="700">&gt;_</text>
+    <text x="72" y="94" fill="#f2f2f2" font-size="16" font-weight="600">Terminal</text>
+    <text x="72" y="110" fill="#7d8590" font-size="11">user@android — proot</text>
+    <circle cx="378" cy="92" r="2" fill="#8b949e"/>
+    <circle cx="386" cy="92" r="2" fill="#8b949e"/>
+    <circle cx="394" cy="92" r="2" fill="#8b949e"/>
+
+    <!-- Terminal body -->
+    <g font-size="12.5" fill="#c9d1d9">
+      <text x="30" y="152"><tspan fill="#3ddc84">user@android</tspan><tspan fill="#7d8590">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#7d8590">$ </tspan><tspan fill="#f2f2f2">whoami</tspan></text>
+      <text x="30" y="174" fill="#e6e6e6">your_username</text>
+
+      <text x="30" y="204"><tspan fill="#3ddc84">user@android</tspan><tspan fill="#7d8590">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#7d8590">$ </tspan><tspan fill="#f2f2f2">cat profile.txt</tspan></text>
+      <text x="30" y="226"><tspan fill="#7d8590">Name    </tspan><tspan fill="#e6e6e6">Your Name</tspan></text>
+      <text x="30" y="246"><tspan fill="#7d8590">Role    </tspan><tspan fill="#e6e6e6">Full-Stack Developer</tspan></text>
+      <text x="30" y="266"><tspan fill="#7d8590">Based   </tspan><tspan fill="#e6e6e6">Your City, Country</tspan></text>
+      <text x="30" y="286"><tspan fill="#7d8590">Status  </tspan><tspan fill="#3ddc84">Open to opportunities</tspan></text>
+
+      <text x="30" y="316"><tspan fill="#3ddc84">user@android</tspan><tspan fill="#7d8590">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#7d8590">$ </tspan><tspan fill="#f2f2f2">ls skills/</tspan></text>
+      <text x="30" y="338" fill="#58a6ff">android/  kotlin/  java/  python/</text>
+      <text x="30" y="358" fill="#58a6ff">javascript/  linux/  git/  docker/</text>
+
+      <text x="30" y="388"><tspan fill="#3ddc84">user@android</tspan><tspan fill="#7d8590">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#7d8590">$ </tspan><tspan fill="#f2f2f2">cat contact.txt</tspan></text>
+      <text x="30" y="410"><tspan fill="#7d8590">Email     </tspan><tspan fill="#e6e6e6">your.email@example.com</tspan></text>
+      <text x="30" y="430"><tspan fill="#7d8590">LinkedIn  </tspan><tspan fill="#e6e6e6">/in/your-linkedin</tspan></text>
+      <text x="30" y="450"><tspan fill="#7d8590">GitHub    </tspan><tspan fill="#e6e6e6">@your-username</tspan></text>
+
+      <text x="30" y="480"><tspan fill="#3ddc84">user@android</tspan><tspan fill="#7d8590">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#7d8590">$ </tspan><tspan fill="#f2f2f2">echo "Thanks for visiting!"</tspan></text>
+      <text x="30" y="502" fill="#e6e6e6">Thanks for visiting!</text>
+
+      <text x="30" y="532"><tspan fill="#3ddc84">user@android</tspan><tspan fill="#7d8590">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#7d8590">$ </tspan></text>
+      <rect x="150" y="521" width="8" height="14" fill="#3ddc84"/>
+    </g>
+
+    <!-- Bottom nav bar -->
+    <rect x="14" y="552" width="392" height="50" fill="#0d1117"/>
+    <path d="M150 571 l10 6 l0 -12 z" fill="none" stroke="#c9d1d9" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="210" cy="577" r="8" fill="none" stroke="#c9d1d9" stroke-width="1.6"/>
+    <rect x="258" y="569" width="16" height="16" rx="2.5" fill="none" stroke="#c9d1d9" stroke-width="1.6"/>
+  </g>
+
+  <rect x="14" y="14" width="392" height="588" rx="30" fill="none" stroke="#000000" stroke-width="1"/>
+</svg>
