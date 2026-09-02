@@ -1,21 +1,17 @@
-# Kiran R — Andrew-style terminal GitHub profile
+# Setup
 
-Create a **public** repository named exactly `kiranr12r`.
+1. Create a public GitHub repository whose name is **exactly your GitHub username**.
+2. Copy `README.md` into the root of that repository.
+3. Copy the `assets/hanuman-hero.png` file into an `assets` folder.
+4. The README is already configured for **kiranr12r**.
+5. Replace the three example projects with your real repositories.
+6. Commit and push. GitHub will automatically display the README on your profile.
 
-Upload this structure:
+## Optional
 
-```text
-kiranr12r/
-├── .github/workflows/update-profile.yml
-├── assets/profile.jpg
-├── README.md
-├── dark_mode.svg
-├── light_mode.svg
-└── generate_profile.py
-```
-
-Then open **Actions → Update GitHub profile → Run workflow**.
-
-The README only selects the dark/light SVG. The Python generator updates public GitHub statistics automatically.
-
-The design follows the terminal/system-information concept you showed, while using your own photo, identity, skills and projects.
+You can later add:
+- a custom social-preview image
+- GitHub Actions
+- contribution snake generation
+- animated SVG sections
+- a dedicated projects section
